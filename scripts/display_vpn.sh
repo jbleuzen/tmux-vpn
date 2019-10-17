@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-# Check if we're on the corp wifi
-network_name=$( /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport --getinfo | grep -E '\bSSID:' | cut -d: -f2- | sed -E -e 's/^ (.+)/\1/' )
+get_tmux_option() {
+	local option="$1"
+	local default_value="$2"
+	local option_value="$(tmux show-option -gqv "$option")"
+	if [ -z "$option_value" ]; then
+		echo "$default_value"
+	else
+		echo "$option_value"
+	fi
+}
 
 if netstat -nr -f inet | grep utun > /dev/null; then
-	echo "#[bg=colour70,fg=colour255]   "
-elif [[ $network_name == "wpa2" ]]; then
-	echo "#[bg=colour75,fg=colour0]   "
+  echo $(get_tmux_option "@vpn_online_icon" "VPN")"#[default]"
 else
-	echo "#[bg=colour214,fg=colour240]   "
+	echo $(get_tmux_option "@vpn_offline_icon" "NO-VPN")"#[default]"
 fi
