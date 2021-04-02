@@ -12,7 +12,7 @@ get_tmux_option() {
 }
 
 if netstat -nr -f inet | grep utun > /dev/null; then
-  echo $(get_tmux_option "@vpn_online_icon" "VPN")"#[default]"
+  echo $(get_tmux_option "@vpn_online_icon" "VPN")""
 else
-	echo $(get_tmux_option "@vpn_offline_icon" "NO-VPN")"#[default]"
+	echo $(get_tmux_option "@vpn_offline_icon" "NO-VPN")""
 fi
